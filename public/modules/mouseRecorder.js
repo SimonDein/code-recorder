@@ -53,14 +53,14 @@ const mouseRecorder = {
     this.currentFrameIndex += 1;
     const self = this;
 
-    const msElapsedSinceStart = window.performance.now() - this.startTime;
+    const msElapsedSinceStartedPlaying = window.performance.now() - this.startTime;
     const msDifferenceBetweenCurrentAndNextFrame = nextFrame.timeStamp - currentFrame.timeStamp;
     const msDifferneceBetweenCurrentAndFirstFrame = currentFrame.timeStamp - this.frames[0].timeStamp;
-    const timeElapsedCurrentFrameTimeDifference = msElapsedSinceStart - msDifferneceBetweenCurrentAndFirstFrame;
+    const msDelay = msElapsedSinceStartedPlaying - msDifferneceBetweenCurrentAndFirstFrame;
 
     setTimeout(function() {
       self.playFrames();
-    }, (msDifferenceBetweenCurrentAndNextFrame) - (timeElapsedCurrentFrameTimeDifference));
+    }, (msDifferenceBetweenCurrentAndNextFrame) - (msDelay));
   },
 
   // Record frame if 16ms has passed since last frame (1 frame per 16ms === 60fps)
