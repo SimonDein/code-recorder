@@ -38,6 +38,7 @@ const mouseRecorder = {
     if (this.frames.length === 0) return;
 
     this.playing = true;
+    this.startTime = window.performance.now();
     this.playFrames()
   },
 
@@ -45,16 +46,21 @@ const mouseRecorder = {
     const currentFrame = this.frames[this.currentFrameIndex];
     const nextFrame = this.frames[this.currentFrameIndex + 1];
 
-    this.displayFrame(currentFrame) // standin for paint current frame
+    this.displayFrame(currentFrame)
 
     if (nextFrame === undefined) return;
 
     this.currentFrameIndex += 1;
     const self = this;
 
+    const msElapsedSinceStart = window.performance.now() - this.startTime;
+    const msDifferenceBetweenCurrentAndNextFrame = nextFrame.timeStamp - currentFrame.timeStamp;
+    const msDifferneceBetweenCurrentAndFirstFrame = currentFrame.timeStamp - this.frames[0].timeStamp;
+    const timeElapsedCurrentFrameTimeDifference = msElapsedSinceStart - msDifferneceBetweenCurrentAndFirstFrame;
+
     setTimeout(function() {
       self.playFrames();
-    }, nextFrame.timeStamp - currentFrame.timeStamp);
+    }, (msDifferenceBetweenCurrentAndNextFrame) - (timeElapsedCurrentFrameTimeDifference));
   },
 
   // Record frame if 16ms has passed since last frame (1 frame per 16ms === 60fps)
