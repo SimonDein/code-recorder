@@ -46,7 +46,7 @@ const mouseRecorder = {
     const currentFrame = this.frames[this.currentFrameIndex];
     const nextFrame = this.frames[this.currentFrameIndex + 1];
 
-    this.displayFrame(currentFrame)
+    this.displayFrame(currentFrame);
 
     if (nextFrame === undefined) return;
 
