@@ -1,35 +1,54 @@
 import {mouseRecorder} from './modules/mouseRecorder.js';
-const mouseRecorder1 = Object.create(mouseRecorder).init();
 
-console.log(mouseRecorder1);
 const startButton = document.querySelector('#start');
 const pauseButton = document.querySelector('#pause');
 const playButton = document.querySelector('#play');
 const stopButton = document.querySelector('#stop');
 const durationDisplay = document.querySelector('#duration');
 
+let secondsPassed = 0 //
+const mouseRecorder1 = Object.create(mouseRecorder).init();
+let mediaRecorder;
 let interval
 let start;
 let stop;
+let audioChunks = [];
 
-startButton.onclick = () => {
-  interval = window.setInterval(increaseDuration, 1000, durationDisplay)
+
+// START Button
+startButton.onclick = async () => {
+  interval = window.setInterval(increaseDuration, 1000, durationDisplay) // Increment time each second and display it
   mouseRecorder1.record();
+
+  let audioStream;
+  try {
+    audioStream =  await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (error) {
+    console.log('An audio stream could not be created', error);
+    return;
+  }
+
+  mediaRecorder = new MediaRecorder(audioStream);
+  mediaRecorder.ondataavailable = (event) => {
+    audioChunks.push(event.data);
+  }
+  mediaRecorder.start();
 }
 
-// 700, 800, 830, 1200, 1400
-
+// STOP button
 stopButton.onclick = () => {
   clearInterval(interval);
   durationDisplay.innerHTML = '00:00';
   mouseRecorder1.stop();
+
+  mediaRecorder.stop();
 }
 
+// PLAY button
 playButton.onclick = () => {
   mouseRecorder1.play();
+  console.log(audioChunks);
 }
-
-let secondsPassed = 0;
 
 function increaseDuration() {
   secondsPassed += 1;
@@ -38,6 +57,8 @@ function increaseDuration() {
   display.innerHTML = format(secondsPassed);
 }
 
+// ==========================
+// Helper functions
 function format(seconds) {
   let minutes = String(Math.floor(seconds / 60));
   seconds = String(seconds % 60);
@@ -48,10 +69,12 @@ function format(seconds) {
   return `${minutesPadding}${minutes}:${secondsPadding}${seconds}`;
 }
 
-const keyrecorder = {
-  frames: [],
-
-  record() {
-    this.frames.push
+async function getAudioStream() {
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    console.log(stream);
+    return stream;
+  } catch(error) {
+    console.log('An audio stream could not be created', error);
   }
 }
