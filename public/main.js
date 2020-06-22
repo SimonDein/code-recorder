@@ -1,37 +1,40 @@
 import {mouseRecorder} from './modules/mouseRecorder.js';
 
 const startButton = document.querySelector('#start');
-const pauseButton = document.querySelector('#pause');
 const playButton = document.querySelector('#play');
 const stopButton = document.querySelector('#stop');
 const durationDisplay = document.querySelector('#duration');
+const audioPlayer = document.querySelector('#audio-player');
 
 let secondsPassed = 0 //
+let interval
 const mouseRecorder1 = Object.create(mouseRecorder).init();
 let mediaRecorder;
-let interval
-let start;
-let stop;
 let audioChunks = [];
 
-
-// START Button
-startButton.onclick = async () => {
-  interval = window.setInterval(increaseDuration, 1000, durationDisplay) // Increment time each second and display it
-  mouseRecorder1.record();
-
-  let audioStream;
+(async () => {
   try {
-    audioStream =  await navigator.mediaDevices.getUserMedia({ audio: true });
+    let audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(audioStream);
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data);
+    }
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audio.play();
+    }
   } catch (error) {
     console.log('An audio stream could not be created', error);
-    return;
   }
+})();
 
-  mediaRecorder = new MediaRecorder(audioStream);
-  mediaRecorder.ondataavailable = (event) => {
-    audioChunks.push(event.data);
-  }
+// START Button
+startButton.onclick = () => {
+  interval = window.setInterval(increaseDuration, 1000, durationDisplay) // Increment time each second and display it
+  mouseRecorder1.record();
   mediaRecorder.start();
 }
 
@@ -39,15 +42,14 @@ startButton.onclick = async () => {
 stopButton.onclick = () => {
   clearInterval(interval);
   durationDisplay.innerHTML = '00:00';
-  mouseRecorder1.stop();
 
+  mouseRecorder1.stop();
   mediaRecorder.stop();
 }
 
 // PLAY button
 playButton.onclick = () => {
   mouseRecorder1.play();
-  console.log(audioChunks);
 }
 
 function increaseDuration() {
