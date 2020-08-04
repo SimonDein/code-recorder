@@ -5,7 +5,6 @@ const mouseRecorder = {
     this.recording = false;
     this.playing = false;
     this.cursor = document.querySelector('#cursor');
-    console.log(this.cursor);
 
     window.addEventListener('mousemove', function (mouseEvent) {
       if (!this.recording) return
@@ -24,7 +23,6 @@ const mouseRecorder = {
   },
 
   record() {
-    console.log(this);
     this.recording = true;
   },
 
@@ -63,14 +61,13 @@ const mouseRecorder = {
     }, (msDifferenceBetweenCurrentAndNextFrame) - (msDelay));
   },
 
-  // Record frame if 16ms has passed since last frame (1 frame per 16ms === 60fps)
+  // Record frame if 16.6ms has passed since last frame (1 frame per 16.6ms === 60fps)
   isTimeForNewFrame() {
     const lastFrame = this.frames[this.frames.length - 1];
-    return (performance.now() - lastFrame.timeStamp) >= 16
+    return (performance.now() - lastFrame.timeStamp) >= 16.6;
   },
 
   displayFrame(frame) {
-    console.log(this.cursor);
     this.cursor.style.top = `${frame.y}px`;
     this.cursor.style.left = `${frame.x}px`;
   }
