@@ -1,7 +1,7 @@
 {
   "name": "project_x",
   "version": "1.0.0",
-  "description": "Testing out writing a Scrimba clone",
+  "description": "Testing a Scrimba like MVP",
   "main": "app.js",
   "scripts": {
     "test": "test",
