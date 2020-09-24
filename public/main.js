@@ -6,7 +6,7 @@ const stopButton = document.querySelector('#stop');
 const durationDisplay = document.querySelector('#duration');
 const audioPlayer = document.querySelector('#audio-player');
 
-let secondsPassed = 0 //
+let secondsPassed = 0
 let interval
 const mouseRecorder1 = Object.create(mouseRecorder).init();
 let mediaRecorder;
