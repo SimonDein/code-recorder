@@ -41,52 +41,30 @@ const mouseRecorder = {
   },
 
   playFrames() {
+    if (this.frames.length === 0) return;
+
+    window.requestAnimationFrame(this.displayNextFrame.bind(this));
+  },
+
+  displayNextFrame(timestamp) {
     this.currentFrame = this.frames[this.currentFrameIndex];
     const nextFrame = this.frames[this.currentFrameIndex + 1];
 
     if (nextFrame === undefined) return;
 
-    // const self = this;
+    this.displayFrameTransform();
+    this.currentFrameIndex += 1;
 
-    // const msElapsedSinceStartedPlaying = window.performance.now() - this.startTime;
-    // const msDifferenceBetweenCurrentAndNextFrame = nextFrame.timeStamp - currentFrame.timeStamp;
-    // const msDifferneceBetweenCurrentAndFirstFrame = currentFrame.timeStamp - this.frames[0].timeStamp;
-    // const msDelay = msElapsedSinceStartedPlaying - msDifferneceBetweenCurrentAndFirstFrame;
-    // console.log(msDelay);
-
-    // setTimeout(function() {
-      //   self.playFrames();
-      // }, (msDifferenceBetweenCurrentAndNextFrame) - (msDelay));
-
-      /*
-      - If enough time has passed since last draw
-      - requestAnimation(Draw)
-      - Call recursive
-
-      */
-
-    const msElapsedSinceStartedPlaying = window.performance.now() - this.startTime;
-    const msDifferenceBetweenCurrentAndNextFrame = nextFrame.timeStamp - currentFrame.timeStamp;
-    const msDifferneceBetweenCurrentAndFirstFrame = currentFrame.timeStamp - this.frames[0].timeStamp;
-    const msDelay = msElapsedSinceStartedPlaying - msDifferneceBetweenCurrentAndFirstFrame;
-
-    if (msElapsedSinceStartedPlaying >= msDifferneceBetweenCurrentAndFirstFrame) {
-      requestAnimationFrame(this.displayFrame.bind(this));
-      this.currentFrameIndex += 1;
-    };
-
-    this.playFrames();
+    window.requestAnimationFrame(this.displayNextFrame.bind(this));
   },
-
-  // Record frame if 16.6ms has passed since last frame (1 frame per 16.6ms === 60fps)
+  // Record frame if 16.6ms has passed since last frame (1 frame per 16.67ms === 60fps)
   isTimeForNewFrame() {
     const lastFrame = this.frames[this.frames.length - 1];
-    return (performance.now() - lastFrame.timeStamp) >= 16.6;
+    return (performance.now() - lastFrame.timeStamp) >= 16.67;
   },
 
-  displayFrame() {
-    this.cursor.style.top = `${this.currentFrame.y}px`;
-    this.cursor.style.left = `${this.currentFrame.x}px`;
+  displayFrameTransform() {
+    this.cursor.style.transform = `translate(${this.currentFrame.x}px, ${this.currentFrame.y}px)`;
   }
 };
 
