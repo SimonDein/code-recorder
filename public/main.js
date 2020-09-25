@@ -12,24 +12,24 @@ const mouseRecorder1 = Object.create(mouseRecorder).init();
 let mediaRecorder;
 let audioChunks = [];
 
-(async () => {
-  try {
-    let audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(audioStream);
-    mediaRecorder.ondataavailable = (event) => {
-      audioChunks.push(event.data);
-    }
+// (async () => {
+//   try {
+//     let audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+//     mediaRecorder = new MediaRecorder(audioStream);
+//     mediaRecorder.ondataavailable = (event) => {
+//       audioChunks.push(event.data);
+//     }
 
-    mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      audio.play();
-    }
-  } catch (error) {
-    console.log('An audio stream could not be created', error);
-  }
-})();
+//     mediaRecorder.onstop = () => {
+//       const audioBlob = new Blob(audioChunks);
+//       const audioUrl = URL.createObjectURL(audioBlob);
+//       const audio = new Audio(audioUrl);
+//       audio.play();
+//     }
+//   } catch (error) {
+//     console.log('An audio stream could not be created', error);
+//   }
+// })();
 
 // START Button
 startButton.onclick = () => {
