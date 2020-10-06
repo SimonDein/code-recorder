@@ -35,7 +35,7 @@ let audioChunks = [];
 startButton.onclick = () => {
   interval = window.setInterval(increaseDuration, 1000, durationDisplay) // Increment time each second and display it
   mouseRecorder1.record();
-  mediaRecorder.start();
+  // mediaRecorder.start();
 }
 
 // STOP button
@@ -44,7 +44,7 @@ stopButton.onclick = () => {
   durationDisplay.innerHTML = '00:00';
 
   mouseRecorder1.stop();
-  mediaRecorder.stop();
+  // mediaRecorder.stop();
 }
 
 // PLAY button

@@ -1,8 +1,30 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 a {
   color: #00B7FF;
+}
+
+audio {
+  display: block;
+}
+
+#cursor {
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 0;
+  top: 0;
+}
+
+#editor {
+  margin: 0;
+  width: 500px;
+  height: 500px;
 }
