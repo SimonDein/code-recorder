@@ -6,7 +6,6 @@ const stopButton = document.querySelector('#stop');
 const durationDisplay = document.querySelector('#duration');
 const audioPlayer = document.querySelector('#audio-player');
 
-<<<<<<< HEAD
 // ace is imported into the global namespace from 'ace-builds/src-noconflict/ace.js' in index.html
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/gruvbox");
@@ -15,8 +14,6 @@ editor.session.setMode("ace/mode/javascript");
 const audioRecorder = new AudioRecorder;
 const multirecorder = new MultiRecorder(recStartButton, recStopButton, audioRecorder, editorRecorder);
 
-=======
->>>>>>> parent of a5120b8... Extracted audio recording to own module. All recording is now done through the multi recorder
 let secondsPassed = 0
 let interval
 const mouseRecorder1 = Object.create(mouseRecorder).init();
