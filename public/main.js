@@ -14,14 +14,19 @@ const recButtons = {
 
 // ====== Ace config ======
 // ace is imported into the global namespace from 'ace-builds/src-noconflict/ace.js' in index.html
-var aceEditor = ace.edit("editor");
+const textArea = document.querySelector('#editor');
+const editor = CodeMirror.fromTextArea(textArea, {
+  lineNumbers: true
+});
+
+console.log(editor);
 
 (async () => {
   const audioStream = await getAudioStream();
 
   // ====== Recorders ======
   const audioRecorder = new AudioRecorder(audioStream);
-  const editorRecorder = new EditorRecorder(aceEditor);
+  const editorRecorder = new EditorRecorder(editor);
   const recordingOrchestrator = new RecordingOrchestrator(recButtons, audioRecorder, editorRecorder);
 })();
 
