@@ -12,8 +12,6 @@ const recButtons = {
 // const durationDisplay = document.querySelector('#duration');
 // const audioPlayer = document.querySelector('#audio-player');
 
-// ====== Ace config ======
-// ace is imported into the global namespace from 'ace-builds/src-noconflict/ace.js' in index.html
 const textArea = document.querySelector('#editor');
 const editor = CodeMirror.fromTextArea(textArea, {
   lineNumbers: true
