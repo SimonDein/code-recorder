@@ -17,8 +17,6 @@ const editor = CodeMirror.fromTextArea(textArea, {
   lineNumbers: true
 });
 
-console.log(editor);
-
 (async () => {
   const audioStream = await getAudioStream();
 
